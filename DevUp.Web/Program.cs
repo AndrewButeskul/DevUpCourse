@@ -9,10 +9,12 @@ builder.Services.AddControllers();
 
 var connectionString = builder.Configuration.GetConnectionString("Default");
 
-builder.Services.AddDbContext<AppDBContext>(opt => 
+builder.Services.AddDbContext<AppDBContext>(opt =>
 opt.UseSqlServer(connectionString));
 
 var app = builder.Build();
+
+Database.Migrate(app); // init DB using migration
 
 // Configure the HTTP request pipeline.
 
