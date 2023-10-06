@@ -1,0 +1,40 @@
+version: "3"
+services:
+  sql:
+    container_name: sql
+    image: mcr.microsoft.com/mssql/server
+    ports:
+      - "1433:1433"
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: yourStrong(!)Password
+    networks:
+      - "devup"
+    volumes:
+      - "mssqlsystem:/var/opt/mssql"
+      - "mssqluser:/var/opt/sqlServer"
+    restart: always
+  main_web:
+    container_name: main_web
+    image: devup_main_web
+    ports:
+      - "8000:80"
+    networks:
+      - "devup"
+    restart: always
+  frontend_ng:
+    container_name: frontend_ng
+    image: devup_ng
+    ports:
+      - "9000:80"
+    networks:
+      - "devup"
+    restart: always
+networks:
+  devup:
+    driver: bridge
+volumes:
+  mssqlsystem:
+    external: true
+  mssqluser:
+    external: true
